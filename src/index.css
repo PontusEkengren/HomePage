@@ -19,10 +19,3 @@ code {
   src: local('ATI_8x16'), local('ATI_8x16'),
     url('./fonts/Px437_ATI_8x16.ttf') format('truetype'); /* Safari, Android, iOS */
 }
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
