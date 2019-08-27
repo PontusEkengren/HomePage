@@ -4,9 +4,11 @@ import './app.css';
 import * as api from './api';
 import * as storage from './storage';
 import StartScreen from './StartScreen';
+import { createSecretKey } from 'crypto';
 
 function Main() {
   const [data, setData] = useState([]);
+  const [key, setKey] = useState(null);
   const [started, setStarted] = useState(false);
   const [timer, setTimer] = useState(false);
   const [saveFile, setSaveFile] = storage.useLocalStorage('save', undefined);
@@ -30,10 +32,35 @@ function Main() {
     loadGame();
   }, []);
 
-  console.log('data', data);
+  const handleKeyDown = e => {
+    switch (e.keyCode) {
+      case 37:
+        setKey('W');
+        break;
+      case 38:
+        setKey('N');
+        break;
+      case 39:
+        setKey('E');
+        break;
+      case 40:
+        setKey('S');
+        break;
+      default:
+        setKey(null);
+        break;
+    }
+  };
+
+  console.log('data', key, data);
   if (!data) return <div className="center">Loading..</div>;
   return (
-    <div className="center" style={{ height: '250px' }}>
+    <div
+      className="center"
+      style={{ height: '250px' }}
+      onKeyDown={handleKeyDown}
+      tabIndex="0"
+    >
       <StartScreen
         started={started}
         data={data}
@@ -42,6 +69,7 @@ function Main() {
       ></StartScreen>
 
       {started && <div className="textWindow">{data.description}</div>}
+      <div />
     </div>
   );
 }
