@@ -4,11 +4,10 @@ import './app.css';
 import * as api from './api';
 import * as storage from './storage';
 import StartScreen from './StartScreen';
-import { createSecretKey } from 'crypto';
 
 function Main() {
   const [data, setData] = useState([]);
-  const [key, setKey] = useState(null);
+  const [key, setKey] = useState('UNDEFINED');
   const [started, setStarted] = useState(false);
   const [timer, setTimer] = useState(false);
   const [saveFile, setSaveFile] = storage.useLocalStorage('save', undefined);
@@ -33,22 +32,37 @@ function Main() {
   }, []);
 
   const handleKeyDown = e => {
+    var choice = null;
+
     switch (e.keyCode) {
       case 37:
-        setKey('W');
+        choice = 'W';
         break;
       case 38:
-        setKey('N');
+        choice = 'N';
         break;
       case 39:
-        setKey('E');
+        choice = 'E';
         break;
       case 40:
-        setKey('S');
+        choice = 'S';
         break;
       default:
-        setKey(null);
+        choice = null;
         break;
+    }
+
+    setKey(choice);
+
+    if (choice && choice !== 'UNDEFINED') {
+      const handleMove = direction => {
+        api
+          .move(data, direction)
+          .then(response => console.log('move:', response))
+          .catch(err => console.log('err: ', err));
+      };
+
+      handleMove(choice);
     }
   };
 
