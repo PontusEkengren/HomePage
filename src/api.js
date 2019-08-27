@@ -1,5 +1,5 @@
 import axios from 'axios';
 
-export const postStartGameCall = () => {
+export const loadGame = () => {
   return axios.post('https://api.noopschallenge.com/pathbot/start');
 };

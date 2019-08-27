@@ -3,20 +3,20 @@ import './index.css';
 import './app.css';
 import * as api from './api';
 import * as storage from './storage';
+import StartScreen from './StartScreen';
 
 function Main() {
   const [data, setData] = useState([]);
+  const [started, setStarted] = useState(false);
   const [saveFile, setSaveFile] = storage.useLocalStorage('save', undefined);
 
-  useEffect(() => startGame(), []);
+  useEffect(() => loadGame(), []);
 
-  const startGame = () => {
+  const loadGame = () => {
     if (saveFile) {
-      console.log('local');
       setData(saveFile);
     } else {
-      console.log('api');
-      api.postStartGameCall().then(response => {
+      api.loadGame().then(response => {
         setData(response.data);
         setSaveFile(response.data);
       });
@@ -26,12 +26,16 @@ function Main() {
   console.log('data', data);
   return (
     <div className="center" style={{ height: '250px' }}>
-      <div>Under construction.. =) </div>
-
-      <div>
-        You find yourself in a strange room. You're not sure how you got here
-        but you know you need to escape, somehow.
-      </div>
+      <StartScreen started={started} data={data}></StartScreen>
+      {!started && (
+        <div
+          style={{ backgroundColor: 'Start', marginTop: '13px' }}
+          onClick={() => setStarted(true)}
+        >
+          Start Game
+        </div>
+      )}
+      {started && <div>{data.description}</div>}
     </div>
   );
 }
