@@ -20,8 +20,8 @@ export default function DialogText({ data }) {
             marginTop: '35px',
           }}
         >
-          {data.exits.map(exit => (
-            <div>{dialog.direction[exit]}</div>
+          {data.exits.map((exit, index) => (
+            <div key={index}>{dialog.direction[exit]}</div>
           ))}
         </div>
       )}
