@@ -4,10 +4,10 @@ export const progress = {
 };
 
 export const direction = {
-  N: 'North',
-  W: 'West',
-  E: 'East',
-  S: 'South',
+  N: 'North (Up)',
+  W: 'West (Left)',
+  E: 'East (Right)',
+  S: 'South (Down)',
 };
 
 export const interactions = {

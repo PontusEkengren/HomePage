@@ -4,7 +4,7 @@ import './app.css';
 import * as api from './api';
 import * as storage from './storage';
 import StartScreen from './StartScreen';
-import * as dialog from './dialog';
+import DialogText from './DialogText';
 
 function Main() {
   const [data, setData] = useState([]);
@@ -92,18 +92,7 @@ function Main() {
             flexDirection: 'column',
           }}
         >
-          <div className="center">
-            <div>{data.description}</div>
-            {data && data.status && (
-              <div
-                style={{
-                  marginTop: '35px',
-                }}
-              >
-                {dialog.progress[data.status]}
-              </div>
-            )}
-          </div>
+          <DialogText data={data}></DialogText>
         </div>
       )}
       <div />
