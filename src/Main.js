@@ -4,6 +4,7 @@ import './app.css';
 import * as api from './api';
 import * as storage from './storage';
 import StartScreen from './StartScreen';
+import * as dialog from './dialog';
 
 function Main() {
   const [data, setData] = useState([]);
@@ -66,7 +67,7 @@ function Main() {
     }
   };
 
-  console.log('data', key, data);
+  console.log('data', data);
   if (!data) return <div className="center">Loading..</div>;
   return (
     <div
@@ -82,7 +83,29 @@ function Main() {
         onStarted={setStarted}
       ></StartScreen>
 
-      {started && <div className="textWindow">{data.description}</div>}
+      {started && (
+        <div
+          className="textWindow"
+          style={{
+            height: '60px',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <div className="center">
+            <div>{data.description}</div>
+            {data && data.status && (
+              <div
+                style={{
+                  marginTop: '35px',
+                }}
+              >
+                {dialog.progress[data.status]}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       <div />
     </div>
   );
