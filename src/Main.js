@@ -19,8 +19,7 @@ function Main() {
         setData(saveFile);
       } else {
         api.loadGame().then(response => {
-          setData(response.data);
-          setSaveFile(response.data);
+          setLocation(response.data);
         });
       }
     };
@@ -31,6 +30,11 @@ function Main() {
 
     loadGame();
   }, []);
+
+  const setLocation = data => {
+    setData(data);
+    setSaveFile(data);
+  };
 
   const handleKeyDown = e => {
     var choice = null;
@@ -59,8 +63,8 @@ function Main() {
       const handleMove = direction => {
         api
           .move(data, direction)
-          .then(response => console.log('move:', response))
-          .catch(err => console.log('err: ', err));
+          .then(response => setLocation(response.data))
+          .catch(err => console.log('You cant go that way'));
       };
 
       handleMove(choice);
