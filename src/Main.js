@@ -35,6 +35,21 @@ function Main() {
     setData(data);
     setSaveFile(data);
   };
+  const handleClick = key => {
+    console.log('key', key);
+    setKey(key);
+
+    if (key && key !== 'UNDEFINED') {
+      const handleMove = direction => {
+        api
+          .move(data, direction)
+          .then(response => setLocation(response.data))
+          .catch(err => console.log('You cant go that way'));
+      };
+
+      handleMove(key);
+    }
+  };
 
   const handleKeyDown = e => {
     var choice = null;
@@ -96,7 +111,11 @@ function Main() {
             flexDirection: 'column',
           }}
         >
-          <DialogText data={data}></DialogText>
+          <DialogText
+            data={data}
+            move={key}
+            onHandleClick={handleClick}
+          ></DialogText>
         </div>
       )}
       <div />

@@ -1,27 +1,17 @@
 import React from 'react';
 import * as dialog from './dialog';
+import Map from './Maze';
 
-export default function DialogText({ data }) {
+export default function DialogText({ data, move, onHandleClick }) {
   return (
     <div className="center">
-      <div>{data.description}</div>
-      {data && data.status && (
-        <div
-          style={{
-            marginTop: '35px',
-          }}
-        >
-          {dialog.progress[data.status]}
-        </div>
-      )}
+      <div className="dialog">{data.description}</div>
       {data && data.exits && (
-        <div
-          style={{
-            marginTop: '35px',
-          }}
-        >
+        <div>
           {data.exits.map((exit, index) => (
-            <div key={index}>{dialog.direction[exit]}</div>
+            <div key={index} onClick={() => onHandleClick(exit)}>
+              {dialog.direction[exit]}
+            </div>
           ))}
         </div>
       )}
