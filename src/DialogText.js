@@ -1,36 +1,47 @@
 import React from 'react';
-// import * as dialog from './dialog';
 import './arrows.css';
 import Key from './Key';
 
 export default function DialogText({ data, move, onHandleClick }) {
+  const anyNorth = data.exits.find(exit => exit === 'N');
+  const anyWest = data.exits.find(exit => exit === 'W');
+  const anySouth = data.exits.find(exit => exit === 'S');
+  const anyEast = data.exits.find(exit => exit === 'E');
   return (
     <div className="center">
       <div className="dialog">{data.description}</div>
       {data && data.exits && (
         <div className="arrowKeyNorthSouth">
-          {data.exits.map((exit, index) => (
-            // <div key={index} onClick={() => }>
-            //   {dialog.direction[exit]}
-            // </div>
-
-            <Key key={index} arrow={exit} handleClick={onHandleClick}></Key>
-          ))}
-
-          {/* <div className="test">
-            <i className="arrow up"></i>
-            <div>North</div>
-          </div>
-          <div className="arrowKeyWestEast">
-            <div>
-              <i className="arrow left"></i> West
-            </div>
-            <div>South</div>
-            <div>
-              East <i className="arrow right"></i>
-            </div>
-          </div>
-          <i className="arrow down"></i> */}
+          {
+            <table>
+              <tr>
+                <td className={'hide'}></td>
+                <td className={anyNorth ? 'show' : 'hide'}>
+                  {anyNorth && (
+                    <Key key={0} arrow={'N'} handleClick={onHandleClick}></Key>
+                  )}
+                </td>
+                <td style={{ border: '0px' }}></td>
+              </tr>
+              <tr>
+                <td className={anyWest ? 'show' : 'hide'}>
+                  {anyWest && (
+                    <Key key={0} arrow={'W'} handleClick={onHandleClick}></Key>
+                  )}
+                </td>
+                <td className={anySouth ? 'show' : 'hide'}>
+                  {anySouth && (
+                    <Key key={0} arrow={'S'} handleClick={onHandleClick}></Key>
+                  )}
+                </td>
+                <td className={anyEast ? 'show' : 'hide'}>
+                  {anyEast && (
+                    <Key key={0} arrow={'E'} handleClick={onHandleClick}></Key>
+                  )}
+                </td>
+              </tr>
+            </table>
+          }
         </div>
       )}
     </div>

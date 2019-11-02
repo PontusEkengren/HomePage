@@ -15,6 +15,21 @@
   text-align: center;
 }
 
+td {
+  width: 55px;
+  height: 45px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.show {
+  border: 1px solid white;
+}
+
+.hide {
+  border: 0px;
+}
+
 i {
   border: solid white;
   border-width: 0 3px 3px 0;
