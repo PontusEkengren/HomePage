@@ -14,6 +14,7 @@ export default function DialogText({ data, move, onHandleClick }) {
         <div className="arrowKeyNorthSouth">
           {
             <table>
+              <tbody>
               <tr>
                 <td className={'hide'}></td>
                 <td className={anyNorth ? 'show' : 'hide'}>
@@ -40,6 +41,7 @@ export default function DialogText({ data, move, onHandleClick }) {
                   )}
                 </td>
               </tr>
+              </tbody>
             </table>
           }
         </div>
