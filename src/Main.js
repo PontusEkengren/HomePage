@@ -62,7 +62,6 @@ function Main() {
   // }, []);
 
   useEffect(() => {
-    console.log('REACT_APP_CLIENT_ID', REACT_APP_CLIENT_ID)
     const loadGame = () => {
       if (saveFile) {
         setData(saveFile);
