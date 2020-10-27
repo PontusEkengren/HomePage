@@ -5,10 +5,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### `Prerequisite`
 
-Create an .env file in this folder and enter your google api-client id<br>
+**Create an .env file** in this folder and enter your google api-client id<br>
 To read more see [google documentation](https://developers.google.com/identity/sign-in/web/sign-in).<br>
 ```
 REACT_APP_CLIENT_ID=********.apps.googleusercontent.com
+```
+Default value for server-side is
+```
+REACT_APP_LABYRINTH_SERVER=https://localhost:3001
 ```
 
 ### `npm start`
