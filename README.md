@@ -15,6 +15,10 @@ Default value for server-side is
 REACT_APP_LABYRINTH_SERVER=https://localhost:3001
 ```
 
+### `npm install`
+
+To install dependencies
+
 ### `npm start`
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.

@@ -6,7 +6,7 @@ import * as storage from './storage';
 import StartScreen from './StartScreen';
 import DialogText from './DialogText';
 import LeaderBoard from './LeaderBoard';
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import GoogleAuth from './GoogleAuth';
 const { REACT_APP_CLIENT_ID } = process.env;
 
 function Main() {
@@ -155,7 +155,7 @@ function Main() {
   return (
     <div
       className="center"
-      style={{ height: '250px' }}
+      style={{ height: '600px' }}
       onKeyDown={handleKeyDown}
       tabIndex="0"
     >
@@ -170,51 +170,31 @@ function Main() {
         <div
           className="textWindow"
           style={{
-            height: '60px',
+            height: '600px',
             display: 'flex',
             flexDirection: 'column',
           }}
         >
           <DialogText
+
             data={data}
             move={key}
             onHandleClick={handleClick}
           ></DialogText>
         </div>
       )}
-      <div />
 
-      {imageUrl &&
-        // eslint-disable-next-line jsx-a11y/alt-text
-        <img src={imageUrl} style={{ width: '42px', height: '42px' }} />
-      }
-      {isLogined ?
-        <GoogleLogout
-          clientId={REACT_APP_CLIENT_ID}
-          buttonText='Logout'
-          onLogoutSuccess={logout}
-          onFailure={handleLogoutFailure}
-        >
-        </GoogleLogout> : <GoogleLogin
-          clientId={REACT_APP_CLIENT_ID}
-          buttonText='Login'
-          onSuccess={login}
-          onFailure={handleLoginFailure}
-          cookiePolicy={'single_host_origin'}
-          responseType='code,token'
-        />
-      }
+      <div
+        className="center"
+      >
 
-      <LeaderBoard />
-      {/* <div>
-        <div >
-          <div>Header</div>
-          <div>1</div>
-          <div>Main</div>
-          <div>Right</div>
-          <div>Footer</div>
-        </div>
-      </div> */}
+        {imageUrl &&
+          // eslint-disable-next-line jsx-a11y/alt-text
+          <img src={imageUrl} style={{ width: '42px', height: '42px' }} />
+        }
+        <GoogleAuth isLogined={isLogined} clientId={REACT_APP_CLIENT_ID} handleSuccess={login} onLogoutSuccess={logout} onLogOutFailure={handleLogoutFailure} onLogInFailure={handleLoginFailure} />
+        <LeaderBoard />
+      </div>
     </div>
   );
 }

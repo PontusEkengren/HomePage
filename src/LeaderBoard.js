@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as api from './api';
 import './app.css';
 
-export default function LeaderBoard() {
+export default function LeaderBoard({ users }) {
   const [leaderBoard, setLeaderBoard] = useState(undefined)
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function LeaderBoard() {
 
   return (
     <div style={{ marginTop: '40px' }}>
-      <h1>Leaderboards</h1>
+      <h1>Leaderboard</h1>
       {leaderBoard && leaderBoard.map((user, i) => <div key={i}>{`${user.email} ${user.score}`}</div>)}
     </div>
   );
