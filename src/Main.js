@@ -5,7 +5,8 @@ import * as api from './api';
 import * as storage from './storage';
 import StartScreen from './StartScreen';
 import DialogText from './DialogText';
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
+const { REACT_APP_CLIENT_ID } = process.env;
 
 function Main() {
   const [data, setData] = useState([]);
@@ -13,8 +14,33 @@ function Main() {
   const [started, setStarted] = useState(false);
   const [timer, setTimer] = useState(false);
   const [saveFile, setSaveFile] = storage.useLocalStorage('save', undefined);
-  // const [map, setMap] = useState([["", "", "", ""], ["", "", "", "A"]])
+  const [isLogined, setIsLogined] = storage.useLocalStorage('isLogined', false);
+  const [accessToken, setAccessToken] = useState('');
+  const [name, setName] = storage.useLocalStorage('name', '');
+  const [imageUrl, setImageUrl] = storage.useLocalStorage('imageUrl', undefined);
 
+  // const [map, setMap] = useState([["", "", "", ""], ["", "", "", "A"]])
+  // const { signIn, loaded } = useGoogleLogin({
+  //   onSuccess,
+  //   onAutoLoadFinished,
+  //   clientId,
+  //   cookiePolicy,
+  //   loginHint,
+  //   hostedDomain,
+  //   autoLoad,
+  //   isSignedIn,
+  //   fetchBasicProfile,
+  //   redirectUri,
+  //   discoveryDocs,
+  //   onFailure,
+  //   uxMode,
+  //   scope,
+  //   accessType,
+  //   responseType,
+  //   jsSrc,
+  //   onRequest,
+  //   prompt
+  // });
 
   // const mapArea = useCallback((data, direction) => {
   //   console.log('data', data)
@@ -36,6 +62,7 @@ function Main() {
   // }, []);
 
   useEffect(() => {
+    console.log('REACT_APP_CLIENT_ID', REACT_APP_CLIENT_ID)
     const loadGame = () => {
       if (saveFile) {
         setData(saveFile);
@@ -69,6 +96,35 @@ function Main() {
       handleMove(key);
     }
   };
+
+
+  const login = (response) => {
+    if (response.accessToken) {
+      setIsLogined(true);
+      setAccessToken(response.accessToken);
+      setName(response.profileObj.name);
+      setImageUrl(response.profileObj.imageUrl);
+    }
+  }
+
+  const logout = (response) => {
+    setIsLogined(false);
+    setAccessToken('');
+    console.log('logout', response)
+    setName('');
+    setImageUrl('');
+  }
+
+  const handleLoginFailure = (response) => {
+    // alert('Failed to log in')
+    console.log('handleLoginFailure', response)
+
+  }
+
+  const handleLogoutFailure = (response) => {
+    alert('Failed to log out')
+  }
+
 
   // const getPlayerRelativePosition = (map) => {
   //   for (let i = 0; i < map.length; i++) {
@@ -148,16 +204,27 @@ function Main() {
         </div>
       )}
       <div />
-      <GoogleLogin
-        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-        render={renderProps => (
-          <button onClick={renderProps.onClick} disabled={renderProps.disabled}>This is my custom Google button</button>
-        )}
-        buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        cookiePolicy={'single_host_origin'}
-      />
+
+      {imageUrl &&
+        // eslint-disable-next-line jsx-a11y/alt-text
+        <img src={imageUrl} style={{ width: '42px', height: '42px' }} />
+      }
+      {isLogined ?
+        <GoogleLogout
+          clientId={REACT_APP_CLIENT_ID}
+          buttonText='Logout'
+          onLogoutSuccess={logout}
+          onFailure={handleLogoutFailure}
+        >
+        </GoogleLogout> : <GoogleLogin
+          clientId={REACT_APP_CLIENT_ID}
+          buttonText='Login'
+          onSuccess={login}
+          onFailure={handleLoginFailure}
+          cookiePolicy={'single_host_origin'}
+          responseType='code,token'
+        />
+      }
       {/* <div>
         <div >
           <div>Header</div>
