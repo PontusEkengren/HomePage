@@ -32,5 +32,4 @@ export default function Key({ arrow, handleClick }) {
     default:
       return null;
   }
-  return null;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './index.css';
 import './app.css';
 import * as api from './api';
@@ -12,6 +12,27 @@ function Main() {
   const [started, setStarted] = useState(false);
   const [timer, setTimer] = useState(false);
   const [saveFile, setSaveFile] = storage.useLocalStorage('save', undefined);
+  // const [map, setMap] = useState([["", "", "", ""], ["", "", "", "A"]])
+
+
+  // const mapArea = useCallback((data, direction) => {
+  //   console.log('data', data)
+  //   console.log('playerPos', getPlayerRelativePosition(map))
+
+  //   console.log('direction', direction)
+  // }, [map]);
+
+  const setLocation = useCallback((data, direction) => {
+    // mapArea(data, direction)
+    setData(data);
+    setSaveFile(data);
+    // }, [setData, setSaveFile, mapArea]);
+  }, [setData, setSaveFile]);
+
+  // useEffect(() => {
+  //   console.log('asdadadasd');
+
+  // }, []);
 
   useEffect(() => {
     const loadGame = () => {
@@ -29,12 +50,9 @@ function Main() {
     }, 1850);
 
     loadGame();
-  }, []);
+  }, [saveFile, setLocation]);
 
-  const setLocation = data => {
-    setData(data);
-    setSaveFile(data);
-  };
+
   const handleClick = key => {
     console.log('key', key);
     setKey(key);
@@ -50,6 +68,16 @@ function Main() {
       handleMove(key);
     }
   };
+
+  // const getPlayerRelativePosition = (map) => {
+  //   for (let i = 0; i < map.length; i++) {
+  //     const row = map[i];
+  //     for (let j = 0; j < row.length; j++) {
+  //       if (row[j] === 'A') return { x: i, y: j };
+  //     }
+  //   }
+  // };
+
 
   const handleKeyDown = e => {
     var choice = null;
@@ -78,7 +106,7 @@ function Main() {
       const handleMove = direction => {
         api
           .move(data, direction)
-          .then(response => setLocation(response.data))
+          .then(response => setLocation(response.data, direction))
           .catch(err => console.log('You cant go that way'));
       };
 
@@ -86,7 +114,7 @@ function Main() {
     }
   };
 
-  console.log('data', data);
+  // console.log('data', data);
   if (!data) return <div className="center">Loading..</div>;
   return (
     <div
@@ -119,6 +147,15 @@ function Main() {
         </div>
       )}
       <div />
+      {/* <div>
+        <div >
+          <div>Header</div>
+          <div>1</div>
+          <div>Main</div>
+          <div>Right</div>
+          <div>Footer</div>
+        </div>
+      </div> */}
     </div>
   );
 }
