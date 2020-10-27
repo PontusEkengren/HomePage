@@ -5,6 +5,7 @@ import * as api from './api';
 import * as storage from './storage';
 import StartScreen from './StartScreen';
 import DialogText from './DialogText';
+import LeaderBoard from './LeaderBoard';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 const { REACT_APP_CLIENT_ID } = process.env;
 
@@ -20,27 +21,6 @@ function Main() {
   const [imageUrl, setImageUrl] = storage.useLocalStorage('imageUrl', undefined);
 
   // const [map, setMap] = useState([["", "", "", ""], ["", "", "", "A"]])
-  // const { signIn, loaded } = useGoogleLogin({
-  //   onSuccess,
-  //   onAutoLoadFinished,
-  //   clientId,
-  //   cookiePolicy,
-  //   loginHint,
-  //   hostedDomain,
-  //   autoLoad,
-  //   isSignedIn,
-  //   fetchBasicProfile,
-  //   redirectUri,
-  //   discoveryDocs,
-  //   onFailure,
-  //   uxMode,
-  //   scope,
-  //   accessType,
-  //   responseType,
-  //   jsSrc,
-  //   onRequest,
-  //   prompt
-  // });
 
   // const mapArea = useCallback((data, direction) => {
   //   console.log('data', data)
@@ -224,6 +204,8 @@ function Main() {
           responseType='code,token'
         />
       }
+
+      <LeaderBoard />
       {/* <div>
         <div >
           <div>Header</div>
