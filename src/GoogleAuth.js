@@ -1,6 +1,6 @@
 import React from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
-import { Image, ContainerSpaceBetween } from './Styled/default';
+import { Image, ContainerCenter } from './Styled/default';
 
 export default function GoogleAuth({
   imageUrl,
@@ -12,7 +12,7 @@ export default function GoogleAuth({
   onLogInFailure,
 }) {
   return (
-    <ContainerSpaceBetween>
+    <ContainerCenter>
       {imageUrl && <Image src={imageUrl} />}
       {isLogined ? (
         <GoogleLogout
@@ -31,6 +31,6 @@ export default function GoogleAuth({
           responseType="code,token"
         />
       )}
-    </ContainerSpaceBetween>
+    </ContainerCenter>
   );
 }

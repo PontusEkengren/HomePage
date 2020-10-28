@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import * as api from './api';
-import { Leaderboard, LeaderboardHeader, LeaderboardSore } from './Styled/default';
+import {
+  Leaderboard,
+  ContainerLeaderboard,
+  LeaderboardHeader,
+  LeaderboardSore,
+} from './Styled/default';
 export default function LeaderBoard({ users }) {
   const [leaderBoard, setLeaderBoard] = useState(undefined);
 
@@ -20,7 +25,7 @@ export default function LeaderBoard({ users }) {
   }, [leaderBoard]);
 
   return (
-    <div style={{ marginTop: '40px' }}>
+    <ContainerLeaderboard>
       <LeaderboardHeader>Leaderboard</LeaderboardHeader>
       {leaderBoard &&
         leaderBoard.map((user, i) => (
@@ -29,6 +34,6 @@ export default function LeaderBoard({ users }) {
             <LeaderboardSore>{user.score}</LeaderboardSore>
           </Leaderboard>
         ))}
-    </div>
+    </ContainerLeaderboard>
   );
 }

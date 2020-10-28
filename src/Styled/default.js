@@ -13,6 +13,12 @@ export const ContainerSpaceBetween = styled.div`
   width: 160px;
 `;
 
+export const ContainerCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 160px;
+`;
+
 export const ContainerCenterColumn = styled.div`
   display: flex;
   justify-content: space-between;
@@ -36,6 +42,10 @@ export const Dialog = styled.div`
   height: 90px;
 `;
 
+export const ContainerLeaderboard = styled.div`
+  margin: 40px;
+`;
+
 export const LeaderboardHeader = styled.h1`
   text-align: center;
 `;
@@ -47,6 +57,7 @@ export const LeaderboardSore = styled.div`
 export const Leaderboard = styled.div`
   justify-content: space-between;
   display: flex;
+  margin-top: 12px;
 `;
 
 export const TextWindow = styled.div`
