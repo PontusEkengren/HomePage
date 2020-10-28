@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as api from './api';
-
+import { Leaderboard, LeaderboardHeader, LeaderboardSore } from './Styled/default';
 export default function LeaderBoard({ users }) {
   const [leaderBoard, setLeaderBoard] = useState(undefined);
 
@@ -21,9 +21,14 @@ export default function LeaderBoard({ users }) {
 
   return (
     <div style={{ marginTop: '40px' }}>
-      <h1>Leaderboard</h1>
+      <LeaderboardHeader>Leaderboard</LeaderboardHeader>
       {leaderBoard &&
-        leaderBoard.map((user, i) => <div key={i}>{`${user.email} ${user.score}`}</div>)}
+        leaderBoard.map((user, i) => (
+          <Leaderboard key={i}>
+            <div>{user.email}</div>
+            <LeaderboardSore>{user.score}</LeaderboardSore>
+          </Leaderboard>
+        ))}
     </div>
   );
 }

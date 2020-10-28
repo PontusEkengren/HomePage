@@ -36,6 +36,19 @@ export const Dialog = styled.div`
   height: 90px;
 `;
 
+export const LeaderboardHeader = styled.h1`
+  text-align: center;
+`;
+
+export const LeaderboardSore = styled.div`
+  margin-left: 40px;
+`;
+
+export const Leaderboard = styled.div`
+  justify-content: space-between;
+  display: flex;
+`;
+
 export const TextWindow = styled.div`
   display: flex;
   flex-direction: column;
