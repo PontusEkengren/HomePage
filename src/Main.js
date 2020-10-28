@@ -71,7 +71,7 @@ function Main() {
         api
           .move(data, direction)
           .then(response => setLocation(response.data))
-          .catch(err => console.log('You cant go that way'));
+          .catch(err => console.log(`You can't go that way`));
       };
 
       handleMove(key);
@@ -90,13 +90,11 @@ function Main() {
   const logout = response => {
     setIsLogined(false);
     setAccessToken('');
-    console.log('logout', response);
     setName('');
     setImageUrl('');
   };
 
   const handleLoginFailure = response => {
-    // alert('Failed to log in')
     console.log('handleLoginFailure', response);
   };
 
@@ -141,23 +139,24 @@ function Main() {
         api
           .move(data, direction)
           .then(response => setLocation(response.data, direction))
-          .catch(err => console.log('You cant go that way'));
+          .catch(err => console.log(`You can't go that way`));
       };
 
       handleMove(choice);
     }
   };
 
-  // console.log('data', data);
   if (!data) return <div className="center">Loading..</div>;
   return (
-    <ContainerCenterColumn height={600} onKeyDown={handleKeyDown} tabIndex="0">
+    <ContainerCenterColumn height={800} onKeyDown={handleKeyDown} tabIndex="0">
       <StartScreen started={started} data={data} timer={timer} onStarted={setStarted}></StartScreen>
       {started && (
         <ContainerDialog>
           <DialogText data={data} move={key} onHandleClick={handleClick}></DialogText>
         </ContainerDialog>
       )}
+
+      <ContainerCenterColumn>test</ContainerCenterColumn>
 
       <ContainerCenterColumn>
         <GoogleAuth

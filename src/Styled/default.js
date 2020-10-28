@@ -15,7 +15,7 @@ export const ContainerSpaceBetween = styled.div`
 
 export const ContainerCenterColumn = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
   outline: none;
@@ -27,7 +27,6 @@ export const ContainerDialog = styled.div`
   max-width: 75%;
   outline: none;
   margin-top: 60px;
-  height: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,7 +37,6 @@ export const Dialog = styled.div`
 `;
 
 export const TextWindow = styled.div`
-  height: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
