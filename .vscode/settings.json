@@ -1,6 +1,3 @@
 {
-    "typescript.preferences.quoteStyle": "single",
-    "prettier.jsxSingleQuote": true,
-    "prettier.singleQuote": true,
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": true
 }
