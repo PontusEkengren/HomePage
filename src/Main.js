@@ -114,7 +114,6 @@ function Main() {
   //   }
   // };
 
-
   const handleKeyDown = e => {
     var choice = null;
 
@@ -188,11 +187,9 @@ function Main() {
         className="center"
       >
 
-        {imageUrl &&
-          // eslint-disable-next-line jsx-a11y/alt-text
-          <img src={imageUrl} style={{ width: '42px', height: '42px' }} />
-        }
-        <GoogleAuth isLogined={isLogined} clientId={REACT_APP_CLIENT_ID} handleSuccess={login} onLogoutSuccess={logout} onLogOutFailure={handleLogoutFailure} onLogInFailure={handleLoginFailure} />
+
+        <GoogleAuth
+          imageUrl={imageUrl} isLogined={isLogined} clientId={REACT_APP_CLIENT_ID} handleSuccess={login} onLogoutSuccess={logout} onLogOutFailure={handleLogoutFailure} onLogInFailure={handleLoginFailure} />
         <LeaderBoard />
       </div>
     </div>
