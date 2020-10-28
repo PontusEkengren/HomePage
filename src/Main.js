@@ -6,6 +6,7 @@ import StartScreen from './StartScreen';
 import DialogText from './DialogText';
 import LeaderBoard from './LeaderBoard';
 import GoogleAuth from './GoogleAuth';
+import Maze from './Maze';
 import { ContainerCenterColumn, ContainerDialog } from './Styled/default';
 const { REACT_APP_CLIENT_ID } = process.env;
 
@@ -20,7 +21,13 @@ function Main() {
   const [name, setName] = storage.useLocalStorage('name', '');
   const [imageUrl, setImageUrl] = storage.useLocalStorage('imageUrl', undefined);
 
-  // const [map, setMap] = useState([["", "", "", ""], ["", "", "", "A"]])
+  const [mazeMap, setMazeMap] = useState([
+    ['+', '---', '---', '---', '+'],
+    ['|', '', '', '', '|'],
+    ['|', '', 'A', '', '|'],
+    ['|', '', '', '', '|'],
+    ['+', '---', '---', '---', '|'],
+  ]);
 
   // const mapArea = useCallback((data, direction) => {
   //   console.log('data', data)
@@ -29,14 +36,46 @@ function Main() {
   //   console.log('direction', direction)
   // }, [map]);
 
+  const translateMovementToPosition = useCallback((position, movement) => {
+    console.log('playerPos', position);
+
+    switch (movement) {
+      case 'N':
+        return { ...position, y: position.y - 1 };
+      case 'E':
+        return { ...position, x: position.x + 1 };
+      case 'S':
+        return { ...position, y: position.y + 1 };
+      case 'W':
+        return { ...position, x: position.x - 1 };
+      default:
+        throw 'Unexpected movement';
+    }
+  });
+
+  const renderMapWith = useCallback((position, graphic) => {
+    const newMap = [...mazeMap];
+    newMap[position.y][position.x] = graphic;
+    setMazeMap(newMap);
+  });
+
+  const createNewMap = useCallback((data, movement) => {
+    console.log('data', data, movement);
+    const currentPosition = getPlayerRelativePosition(mazeMap);
+    renderMapWith(currentPosition, '');
+    const newPosition = translateMovementToPosition(currentPosition, movement);
+    renderMapWith(newPosition, 'A');
+  });
+
   const setLocation = useCallback(
     (data, direction) => {
       // mapArea(data, direction)
+      createNewMap(data, direction);
       setData(data);
       setSaveFile(data);
       // }, [setData, setSaveFile, mapArea]);
     },
-    [setData, setSaveFile],
+    [setData, setSaveFile, mazeMap],
   );
 
   // useEffect(() => {
@@ -102,14 +141,15 @@ function Main() {
     alert('Failed to log out');
   };
 
-  // const getPlayerRelativePosition = (map) => {
-  //   for (let i = 0; i < map.length; i++) {
-  //     const row = map[i];
-  //     for (let j = 0; j < row.length; j++) {
-  //       if (row[j] === 'A') return { x: i, y: j };
-  //     }
-  //   }
-  // };
+  const getPlayerRelativePosition = map => {
+    console.log('map', map);
+    for (let i = 0; i < map.length; i++) {
+      const row = map[i];
+      for (let j = 0; j < row.length; j++) {
+        if (row[j] === 'A') return { x: j, y: i };
+      }
+    }
+  };
 
   const handleKeyDown = e => {
     var choice = null;
@@ -156,7 +196,9 @@ function Main() {
         </ContainerDialog>
       )}
 
-      <ContainerCenterColumn>test</ContainerCenterColumn>
+      <ContainerCenterColumn>
+        <Maze data={mazeMap}></Maze>
+      </ContainerCenterColumn>
 
       <ContainerCenterColumn>
         <GoogleAuth
