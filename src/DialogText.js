@@ -11,7 +11,7 @@ export default function DialogText({ data, move, onHandleClick }) {
   return (
     <ContainerCenterColumn>
       <Dialog>{data.description}</Dialog>
-      {data && data.exits && (
+      {data && !data.status !== 'finished' && data.exits && (
         <div>
           {
             <table>
