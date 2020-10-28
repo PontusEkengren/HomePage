@@ -1,7 +1,6 @@
 import React from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { Image, ContainerSpaceBetween } from './Styled/default';
-import './app.css';
 
 export default function GoogleAuth({
   imageUrl,

@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './index.css';
-import './app.css';
 import * as api from './api';
 import * as storage from './storage';
 import StartScreen from './StartScreen';
 import DialogText from './DialogText';
 import LeaderBoard from './LeaderBoard';
 import GoogleAuth from './GoogleAuth';
+import { ContainerCenterColumn, ContainerDialog } from './Styled/default';
 const { REACT_APP_CLIENT_ID } = process.env;
 
 function Main() {
@@ -29,12 +29,15 @@ function Main() {
   //   console.log('direction', direction)
   // }, [map]);
 
-  const setLocation = useCallback((data, direction) => {
-    // mapArea(data, direction)
-    setData(data);
-    setSaveFile(data);
-    // }, [setData, setSaveFile, mapArea]);
-  }, [setData, setSaveFile]);
+  const setLocation = useCallback(
+    (data, direction) => {
+      // mapArea(data, direction)
+      setData(data);
+      setSaveFile(data);
+      // }, [setData, setSaveFile, mapArea]);
+    },
+    [setData, setSaveFile],
+  );
 
   // useEffect(() => {
   //   console.log('asdadadasd');
@@ -59,7 +62,6 @@ function Main() {
     loadGame();
   }, [saveFile, setLocation]);
 
-
   const handleClick = key => {
     console.log('key', key);
     setKey(key);
@@ -76,34 +78,31 @@ function Main() {
     }
   };
 
-
-  const login = (response) => {
+  const login = response => {
     if (response.accessToken) {
       setIsLogined(true);
       setAccessToken(response.accessToken);
       setName(response.profileObj.name);
       setImageUrl(response.profileObj.imageUrl);
     }
-  }
+  };
 
-  const logout = (response) => {
+  const logout = response => {
     setIsLogined(false);
     setAccessToken('');
-    console.log('logout', response)
+    console.log('logout', response);
     setName('');
     setImageUrl('');
-  }
+  };
 
-  const handleLoginFailure = (response) => {
+  const handleLoginFailure = response => {
     // alert('Failed to log in')
-    console.log('handleLoginFailure', response)
+    console.log('handleLoginFailure', response);
+  };
 
-  }
-
-  const handleLogoutFailure = (response) => {
-    alert('Failed to log out')
-  }
-
+  const handleLogoutFailure = response => {
+    alert('Failed to log out');
+  };
 
   // const getPlayerRelativePosition = (map) => {
   //   for (let i = 0; i < map.length; i++) {
@@ -152,47 +151,27 @@ function Main() {
   // console.log('data', data);
   if (!data) return <div className="center">Loading..</div>;
   return (
-    <div
-      className="center"
-      style={{ height: '600px' }}
-      onKeyDown={handleKeyDown}
-      tabIndex="0"
-    >
-      <StartScreen
-        started={started}
-        data={data}
-        timer={timer}
-        onStarted={setStarted}
-      ></StartScreen>
-
+    <ContainerCenterColumn height={600} onKeyDown={handleKeyDown} tabIndex="0">
+      <StartScreen started={started} data={data} timer={timer} onStarted={setStarted}></StartScreen>
       {started && (
-        <div
-          className="textWindow"
-          style={{
-            height: '600px',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <DialogText
-
-            data={data}
-            move={key}
-            onHandleClick={handleClick}
-          ></DialogText>
-        </div>
+        <ContainerDialog>
+          <DialogText data={data} move={key} onHandleClick={handleClick}></DialogText>
+        </ContainerDialog>
       )}
 
-      <div
-        className="center"
-      >
-
-
+      <ContainerCenterColumn>
         <GoogleAuth
-          imageUrl={imageUrl} isLogined={isLogined} clientId={REACT_APP_CLIENT_ID} handleSuccess={login} onLogoutSuccess={logout} onLogOutFailure={handleLogoutFailure} onLogInFailure={handleLoginFailure} />
+          imageUrl={imageUrl}
+          isLogined={isLogined}
+          clientId={REACT_APP_CLIENT_ID}
+          handleSuccess={login}
+          onLogoutSuccess={logout}
+          onLogOutFailure={handleLogoutFailure}
+          onLogInFailure={handleLoginFailure}
+        />
         <LeaderBoard />
-      </div>
-    </div>
+      </ContainerCenterColumn>
+    </ContainerCenterColumn>
   );
 }
 

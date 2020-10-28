@@ -1,17 +1,10 @@
 import React from 'react';
-import './app.css';
+import { TextWindow } from './Styled/default';
 
 export default function StartScreen({ started, data, timer, onStarted }) {
   return (
     !started && (
-      <div
-        className="textWindow"
-        style={{
-          height: '60px',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <TextWindow>
         {data.message}
         {!started && timer && (
           <div
@@ -24,7 +17,7 @@ export default function StartScreen({ started, data, timer, onStarted }) {
             <div>Start Game</div>{' '}
           </div>
         )}
-      </div>
+      </TextWindow>
     )
   );
 }
