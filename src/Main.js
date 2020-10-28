@@ -36,9 +36,7 @@ function Main() {
   //   console.log('direction', direction)
   // }, [map]);
 
-  const translateMovementToPosition = useCallback((position, movement) => {
-    console.log('playerPos', position);
-
+  const translateMovementToPosition = (position, movement) => {
     switch (movement) {
       case 'N':
         return { ...position, y: position.y - 1 };
@@ -51,11 +49,43 @@ function Main() {
       default:
         throw 'Unexpected movement';
     }
-  });
+  };
+
+  const translateDirectionToBlock = direction => {
+    switch (direction) {
+      case 'N':
+        return '---';
+      case 'E':
+        return '|';
+      case 'S':
+        return '---';
+      case 'W':
+        return '|';
+      default:
+        throw 'Unexpected movement';
+    }
+  };
 
   const renderMapWith = useCallback((position, graphic) => {
     const newMap = [...mazeMap];
     newMap[position.y][position.x] = graphic;
+    setMazeMap(newMap);
+  });
+
+  const renderSurrounding = useCallback((centerPosition, exits) => {
+    console.log('centerPosition', centerPosition, exits);
+
+    const blockedExits = ['N', 'E', 'S', 'W'].filter(exit => !exits.some(e => e === exit));
+    console.log('blockedExits', blockedExits);
+
+    const newMap = [...mazeMap];
+    blockedExits.forEach(exitDirection => {
+      const surroundingPosition = translateMovementToPosition(centerPosition, exitDirection);
+      newMap[surroundingPosition.y][surroundingPosition.x] = translateDirectionToBlock(
+        exitDirection,
+      );
+    });
+
     setMazeMap(newMap);
   });
 
@@ -65,6 +95,7 @@ function Main() {
     renderMapWith(currentPosition, '');
     const newPosition = translateMovementToPosition(currentPosition, movement);
     renderMapWith(newPosition, 'A');
+    renderSurrounding(newPosition, data.exits);
   });
 
   const setLocation = useCallback(
