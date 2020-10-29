@@ -5,17 +5,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #d1d1d1;
   background-color: black;
+  overflow: hidden;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 @font-face {
   font-family: 'ATI_8x16';
   font-style: normal;
   font-weight: 400;
-  src: local('ATI_8x16'), local('ATI_8x16'),
-    url('./fonts/Px437_ATI_8x16.ttf') format('truetype'); /* Safari, Android, iOS */
+  src: local('ATI_8x16'), local('ATI_8x16'), url('./fonts/Px437_ATI_8x16.ttf') format('truetype'); /* Safari, Android, iOS */
 }

@@ -7,6 +7,7 @@ import DialogText from './DialogText';
 import LeaderBoard from './LeaderBoard';
 import GoogleAuth from './GoogleAuth';
 import Maze from './Maze';
+import { getPlayerRelativePosition } from './Game/player';
 import { ContainerCenterColumn, ContainerDialog } from './Styled/default';
 const { REACT_APP_CLIENT_ID } = process.env;
 
@@ -77,18 +78,6 @@ function Main() {
       );
     });
 
-    // // ExpandMapIfNearBoarder
-    // console.log('test', newMap.length);
-
-    // if (centerPosition.x === newMap.length - 2) {
-    //   //Expand to right
-    //   for (let i = 0; i < newMap.length; i++) {
-    //     const row = newMap[i];
-    //     row[row.length - 1] = '';
-    //     row.push(i === 0 || i === newMap.length - 1 ? '+' : '|');
-    //   }
-    // }
-
     setMazeMap(newMap);
   };
 
@@ -120,11 +109,8 @@ function Main() {
 
     for (let i = 0; i < mazeMap.length; i++) {
       const row = mazeMap[i];
-      row.push(' ');
-      for (let j = 0; j < row.length; j++) {
-        if (i === mapSize / 2 && j === mapSize / 2) {
-          mazeMap[i][j] = 'A';
-        }
+      for (let j = 0; j < mapSize; j++) {
+        row[j] = i == mapSize / 2 && j == mapSize / 2 ? 'A' : undefined;
       }
     }
   }, []);
@@ -187,15 +173,6 @@ function Main() {
     alert('Failed to log out');
   };
 
-  const getPlayerRelativePosition = map => {
-    for (let i = 0; i < map.length; i++) {
-      const row = map[i];
-      for (let j = 0; j < row.length; j++) {
-        if (row[j] === 'A') return { x: j, y: i };
-      }
-    }
-  };
-
   const handleKeyDown = e => {
     var choice = null;
 
@@ -249,9 +226,7 @@ function Main() {
         </ContainerDialog>
       )}
 
-      <ContainerCenterColumn>
-        <Maze data={mazeMap}></Maze>
-      </ContainerCenterColumn>
+      <Maze style={{ width: '800px', height: '800px' }} data={mazeMap}></Maze>
 
       <ContainerCenterColumn>
         <GoogleAuth
