@@ -20,22 +20,9 @@ function Main() {
   const [accessToken, setAccessToken] = useState('');
   const [name, setName] = storage.useLocalStorage('name', '');
   const [imageUrl, setImageUrl] = storage.useLocalStorage('imageUrl', undefined);
+  const mapSize = 100;
 
-  const [mazeMap, setMazeMap] = useState([
-    ['+', '---', '---', '---', '+'],
-    ['|', '', '', '', '|'],
-    ['|', '', 'A', '', '|'],
-    ['|', '', '', '', '|'],
-    ['+', '---', '---', '---', '|'],
-  ]);
-
-  // const mapArea = useCallback((data, direction) => {
-  //   console.log('data', data)
-  //   console.log('playerPos', getPlayerRelativePosition(map))
-
-  //   console.log('direction', direction)
-  // }, [map]);
-
+  const [mazeMap, setMazeMap] = useState([]);
   const translateMovementToPosition = (position, movement) => {
     switch (movement) {
       case 'N':
@@ -47,7 +34,7 @@ function Main() {
       case 'W':
         return { ...position, x: position.x - 1 };
       default:
-        throw 'Unexpected movement';
+        throw new Error('Unexpected movement');
     }
   };
 
@@ -62,17 +49,21 @@ function Main() {
       case 'W':
         return '|';
       default:
-        throw 'Unexpected movement';
+        throw new Error('Unexpected direction');
     }
   };
 
-  const renderMapWith = useCallback((position, graphic) => {
-    const newMap = [...mazeMap];
-    newMap[position.y][position.x] = graphic;
-    setMazeMap(newMap);
-  });
+  const renderMapWith = useCallback(
+    (position, graphic) => {
+      console.log('wat');
+      const newMap = [...mazeMap];
+      newMap[position.y][position.x] = graphic;
+      setMazeMap(newMap);
+    },
+    [mazeMap],
+  );
 
-  const renderSurrounding = useCallback((centerPosition, exits) => {
+  const renderSurrounding = (centerPosition, exits) => {
     console.log('centerPosition', centerPosition, exits);
 
     const blockedExits = ['N', 'E', 'S', 'W'].filter(exit => !exits.some(e => e === exit));
@@ -86,33 +77,57 @@ function Main() {
       );
     });
 
-    setMazeMap(newMap);
-  });
+    // // ExpandMapIfNearBoarder
+    // console.log('test', newMap.length);
 
-  const createNewMap = useCallback((data, movement) => {
+    // if (centerPosition.x === newMap.length - 2) {
+    //   //Expand to right
+    //   for (let i = 0; i < newMap.length; i++) {
+    //     const row = newMap[i];
+    //     row[row.length - 1] = '';
+    //     row.push(i === 0 || i === newMap.length - 1 ? '+' : '|');
+    //   }
+    // }
+
+    setMazeMap(newMap);
+  };
+
+  const createNewMap = (data, movement) => {
     console.log('data', data, movement);
     const currentPosition = getPlayerRelativePosition(mazeMap);
-    renderMapWith(currentPosition, '');
+    renderMapWith(currentPosition, ' ');
     const newPosition = translateMovementToPosition(currentPosition, movement);
     renderMapWith(newPosition, 'A');
     renderSurrounding(newPosition, data.exits);
-  });
+  };
 
   const setLocation = useCallback(
     (data, direction) => {
-      // mapArea(data, direction)
+      console.log('setLocation');
+
       createNewMap(data, direction);
       setData(data);
       setSaveFile(data);
-      // }, [setData, setSaveFile, mapArea]);
     },
-    [setData, setSaveFile, mazeMap],
+    [setData, createNewMap, setSaveFile],
   );
 
-  // useEffect(() => {
-  //   console.log('asdadadasd');
+  //Populate map
+  useEffect(() => {
+    for (let i = 0; i < mapSize; i++) {
+      mazeMap.push([]);
+    }
 
-  // }, []);
+    for (let i = 0; i < mazeMap.length; i++) {
+      const row = mazeMap[i];
+      row.push(' ');
+      for (let j = 0; j < row.length; j++) {
+        if (i === mapSize / 2 && j === mapSize / 2) {
+          mazeMap[i][j] = 'A';
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const loadGame = () => {
@@ -173,7 +188,6 @@ function Main() {
   };
 
   const getPlayerRelativePosition = map => {
-    console.log('map', map);
     for (let i = 0; i < map.length; i++) {
       const row = map[i];
       for (let j = 0; j < row.length; j++) {
@@ -220,7 +234,15 @@ function Main() {
   if (!data) return <div className="center">Loading..</div>;
   return (
     <ContainerCenterColumn height={800} onKeyDown={handleKeyDown} tabIndex="0">
-      <StartScreen started={started} data={data} timer={timer} onStarted={setStarted}></StartScreen>
+      <StartScreen
+        started={started}
+        data={data}
+        timer={timer}
+        onStarted={started => {
+          setStarted(started);
+          renderMapWith({ x: mapSize / 2, y: mapSize / 2 }, 'A');
+        }}
+      ></StartScreen>
       {started && (
         <ContainerDialog>
           <DialogText data={data} move={key} onHandleClick={handleClick}></DialogText>
