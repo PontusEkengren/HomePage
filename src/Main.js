@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useLayoutEffect } from 'react';
 import './index.css';
 import * as api from './api';
 import * as storage from './storage';
@@ -20,6 +20,7 @@ function Main() {
   const [isLogined, setIsLogined] = storage.useLocalStorage('isLogined', false);
   const [accessToken, setAccessToken] = useState('');
   const [name, setName] = storage.useLocalStorage('name', '');
+  const [isLocked, setIsLocked] = useState(false);
   const [imageUrl, setImageUrl] = storage.useLocalStorage('imageUrl', undefined);
   const mapSize = 100;
 
@@ -91,11 +92,10 @@ function Main() {
 
   const setLocation = useCallback(
     (data, direction) => {
-      console.log('setLocation');
-
       createNewMap(data, direction);
       setData(data);
       setSaveFile(data);
+      setIsLocked(false);
     },
     [setData, createNewMap, setSaveFile],
   );
@@ -136,12 +136,16 @@ function Main() {
     console.log('key', key);
     setKey(key);
 
-    if (key && key !== 'UNDEFINED') {
+    if (key && key !== 'UNDEFINED' && !isLocked) {
+      setIsLocked(true);
       const handleMove = direction => {
         api
           .move(data, direction)
           .then(response => setLocation(response.data))
-          .catch(err => console.log(`You can't go that way`));
+          .catch(err => {
+            console.log(`You can't go that way`);
+            setIsLocked(false);
+          });
       };
 
       handleMove(key);
@@ -195,12 +199,17 @@ function Main() {
 
     setKey(choice);
 
-    if (choice && choice !== 'UNDEFINED') {
+    if (key && key !== 'UNDEFINED' && !isLocked) {
+      setIsLocked(true);
+
       const handleMove = direction => {
         api
           .move(data, direction)
           .then(response => setLocation(response.data, direction))
-          .catch(err => console.log(`You can't go that way`));
+          .catch(err => {
+            console.log(`You can't go that way`);
+            setIsLocked(false);
+          });
       };
 
       handleMove(choice);
