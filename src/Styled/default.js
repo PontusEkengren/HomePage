@@ -1,5 +1,16 @@
 import styled from 'styled-components';
 
+export const Canvas = styled.canvas`
+  background: DimGray;
+`;
+
+export const colours = {
+  red: '#e60000',
+  green: '#006400',
+  black: '#000000',
+  grey: '#808080',
+};
+
 export const Image = styled.img`
   margin-right: 12px;
   width: 42px;

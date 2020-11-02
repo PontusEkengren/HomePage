@@ -56,7 +56,6 @@ function Main() {
 
   const renderMapWith = useCallback(
     (position, graphic) => {
-      console.log('wat');
       const newMap = [...mazeMap];
       newMap[position.y][position.x] = graphic;
       setMazeMap(newMap);
@@ -84,7 +83,7 @@ function Main() {
   const createNewMap = (data, movement) => {
     console.log('data', data, movement);
     const currentPosition = getPlayerRelativePosition(mazeMap);
-    renderMapWith(currentPosition, ' ');
+    renderMapWith(currentPosition, 'V');
     const newPosition = translateMovementToPosition(currentPosition, movement);
     renderMapWith(newPosition, 'A');
     renderSurrounding(newPosition, data.exits);
