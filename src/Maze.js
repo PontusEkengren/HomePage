@@ -4,7 +4,7 @@ import { Canvas, colours } from './Styled/default';
 export default function Maze({ data, playerMove }) {
   const canvasRef = useRef(null);
   const [ctx, setCtx] = useState(null);
-  const mapArraySize = 80;
+  const mapArraySize = 40;
   const arraySizeFactor = 10;
   const width = mapArraySize * arraySizeFactor;
   const height = mapArraySize * arraySizeFactor;
@@ -22,7 +22,12 @@ export default function Maze({ data, playerMove }) {
       const row = data[i];
       for (let j = 0; j < data.length; j++) {
         if (row[j]) {
-          const update = { y: i * arraySizeFactor, x: j * arraySizeFactor };
+          const update = {
+            y: i * arraySizeFactor,
+            x: j * arraySizeFactor,
+            // y: i * (mapArraySize / arraySizeFactor),
+            // x: j * (mapArraySize / arraySizeFactor),
+          };
           let color = 'black';
           switch (row[j]) {
             case 'A':

@@ -11,6 +11,28 @@ export const colours = {
   grey: '#808080',
 };
 
+export const Button = styled.button`
+  margin-top: 1px;
+
+  white-space: nowrap;
+  position: relative;
+  height: 30px;
+  border-radius: 3px;
+  padding: '5px 20px';
+  font-size: '11px';
+  text-transform: uppercase;
+  background-color: white;
+  border: 1px solid blue;
+  color: navy;
+  cursor: pointer;
+
+  &:hover {
+    background-color: navy;
+    border: 1px solid navy;
+    color: white;
+  }
+`;
+
 export const Image = styled.img`
   margin-right: 12px;
   width: 42px;

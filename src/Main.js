@@ -8,7 +8,7 @@ import LeaderBoard from './LeaderBoard';
 import GoogleAuth from './GoogleAuth';
 import Maze from './Maze';
 import { getPlayerRelativePosition } from './Game/player';
-import { ContainerCenterColumn, ContainerDialog } from './Styled/default';
+import { ContainerCenterColumn, Button, ContainerDialog } from './Styled/default';
 const { REACT_APP_CLIENT_ID } = process.env;
 
 function Main() {
@@ -21,8 +21,9 @@ function Main() {
   const [accessToken, setAccessToken] = useState('');
   const [name, setName] = storage.useLocalStorage('name', '');
   const [isLocked, setIsLocked] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
   const [imageUrl, setImageUrl] = storage.useLocalStorage('imageUrl', undefined);
-  const mapSize = 100;
+  const mapSize = 40;
 
   const [mazeMap, setMazeMap] = useState([]);
   const translateMovementToPosition = (position, movement) => {
@@ -36,7 +37,7 @@ function Main() {
       case 'W':
         return { ...position, x: position.x - 1 };
       default:
-        throw new Error('Unexpected movement');
+        return { ...position, x: position.x };
     }
   };
 
@@ -90,8 +91,18 @@ function Main() {
     renderSurrounding(newPosition, data.exits);
   };
 
+  const checkIfFinished = data => {
+    if (data && data.status === 'finished') {
+      setIsFinished(true);
+      populateNewMap();
+      return true;
+    }
+    return false;
+  };
+
   const setLocation = useCallback(
     (data, direction) => {
+      if (checkIfFinished(data)) return;
       createNewMap(data, direction);
       setData(data);
       setSaveFile(data);
@@ -102,6 +113,10 @@ function Main() {
 
   //Populate map
   useEffect(() => {
+    populateNewMap('A');
+  }, []);
+
+  const populateNewMap = initializer => {
     for (let i = 0; i < mapSize; i++) {
       mazeMap.push([]);
     }
@@ -109,10 +124,10 @@ function Main() {
     for (let i = 0; i < mazeMap.length; i++) {
       const row = mazeMap[i];
       for (let j = 0; j < mapSize; j++) {
-        row[j] = i == mapSize / 2 && j == mapSize / 2 ? 'A' : undefined;
+        row[j] = i == mapSize / 2 && j == mapSize / 2 ? initializer : undefined;
       }
     }
-  }, []);
+  };
 
   useEffect(() => {
     const loadGame = () => {
@@ -136,7 +151,7 @@ function Main() {
     console.log('key', key);
     setKey(key);
 
-    if (key && key !== 'UNDEFINED' && !isLocked) {
+    if (key && key !== 'UNDEFINED' && !isLocked && !isFinished) {
       setIsLocked(true);
       const handleMove = direction => {
         api
@@ -199,7 +214,7 @@ function Main() {
 
     setKey(choice);
 
-    if (key && key !== 'UNDEFINED' && !isLocked) {
+    if (key && key !== 'UNDEFINED' && !isLocked && !isFinished) {
       setIsLocked(true);
 
       const handleMove = direction => {
@@ -234,9 +249,11 @@ function Main() {
         </ContainerDialog>
       )}
 
-      <Maze style={{ width: '800px', height: '800px' }} data={mazeMap}></Maze>
+      <Maze data={mazeMap}></Maze>
 
       <ContainerCenterColumn>
+        {isFinished && <Button>New Game</Button>}
+
         <GoogleAuth
           imageUrl={imageUrl}
           isLogined={isLogined}
