@@ -8,7 +8,6 @@ export default function Maze({ data, playerMove }) {
   const arraySizeFactor = 10;
   const width = mapArraySize * arraySizeFactor;
   const height = mapArraySize * arraySizeFactor;
-  const arrayPixelFactor = width / mapArraySize;
 
   useEffect(() => {
     if (canvasRef && !ctx) {
@@ -18,6 +17,11 @@ export default function Maze({ data, playerMove }) {
   }, [ctx, canvasRef]);
 
   useEffect(() => {
+    const updateMap = (location, color) => {
+      ctx.fillStyle = color ? colours[color] : '#e60000';
+      ctx.fillRect(location.x, location.y, arraySizeFactor, arraySizeFactor);
+    };
+
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
       for (let j = 0; j < data.length; j++) {
@@ -47,12 +51,7 @@ export default function Maze({ data, playerMove }) {
         }
       }
     }
-  }, [data]);
-
-  const updateMap = (location, color) => {
-    ctx.fillStyle = color ? colours[color] : '#e60000';
-    ctx.fillRect(location.x, location.y, arraySizeFactor, arraySizeFactor);
-  };
+  }, [ctx, data]);
 
   return <Canvas ref={canvasRef} width={width} height={height} tabIndex="0" />;
 }

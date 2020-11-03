@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './index.css';
 import * as api from './api';
 import * as storage from './storage';
@@ -66,11 +66,7 @@ function Main() {
   );
 
   const renderSurrounding = (centerPosition, exits) => {
-    console.log('centerPosition', centerPosition, exits);
-
     const blockedExits = ['N', 'E', 'S', 'W'].filter(exit => !exits.some(e => e === exit));
-    console.log('blockedExits', blockedExits);
-
     const newMap = [...mazeMap];
     blockedExits.forEach(exitDirection => {
       const surroundingPosition = translateMovementToPosition(centerPosition, exitDirection);
@@ -94,7 +90,8 @@ function Main() {
   const checkIfFinished = data => {
     if (data && data.status === 'finished') {
       setIsFinished(true);
-      populateNewMap();
+      const blankMap = getBlankMap();
+      setMazeMap(blankMap);
       return true;
     }
     return false;
@@ -116,6 +113,23 @@ function Main() {
     populateNewMap('A');
   }, []);
 
+  const getBlankMap = () => {
+    const tempMap = [];
+
+    for (let i = 0; i < mapSize; i++) {
+      tempMap.push([]);
+    }
+
+    for (let i = 0; i < tempMap.length; i++) {
+      const row = tempMap[i];
+      for (let j = 0; j < mapSize; j++) {
+        row[j] = null;
+      }
+    }
+
+    return tempMap;
+  };
+
   const populateNewMap = initializer => {
     for (let i = 0; i < mapSize; i++) {
       mazeMap.push([]);
@@ -124,7 +138,7 @@ function Main() {
     for (let i = 0; i < mazeMap.length; i++) {
       const row = mazeMap[i];
       for (let j = 0; j < mapSize; j++) {
-        row[j] = i == mapSize / 2 && j == mapSize / 2 ? initializer : undefined;
+        row[j] = i === mapSize / 2 && j === mapSize / 2 ? initializer : undefined;
       }
     }
   };
@@ -249,11 +263,10 @@ function Main() {
         </ContainerDialog>
       )}
 
-      <Maze data={mazeMap}></Maze>
+      {!isFinished && <Maze data={mazeMap}></Maze>}
+      {isFinished && <h1>YOU FOUND THE EXIT!</h1>}
 
       <ContainerCenterColumn>
-        {isFinished && <Button>New Game</Button>}
-
         <GoogleAuth
           imageUrl={imageUrl}
           isLogined={isLogined}

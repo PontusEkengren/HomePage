@@ -8,6 +8,7 @@ export const colours = {
   red: '#e60000',
   green: '#006400',
   black: '#000000',
+  null: '#000000',
   grey: '#808080',
 };
 
@@ -22,13 +23,13 @@ export const Button = styled.button`
   font-size: '11px';
   text-transform: uppercase;
   background-color: white;
-  border: 1px solid blue;
-  color: navy;
+  border: 1px solid DarkSlateGray;
+  color: DarkGreen;
   cursor: pointer;
 
   &:hover {
-    background-color: navy;
-    border: 1px solid navy;
+    background-color: DarkGreen;
+    border: 1px solid DarkGreen;
     color: white;
   }
 `;
@@ -47,6 +48,7 @@ export const ContainerSpaceBetween = styled.div`
 `;
 
 export const ContainerCenter = styled.div`
+  margin-top: 25px;
   display: flex;
   justify-content: center;
   width: 160px;
@@ -64,6 +66,7 @@ export const ContainerCenterColumn = styled.div`
 export const ContainerDialog = styled.div`
   min-width: 55%;
   max-width: 75%;
+  min-height: 215px;
   outline: none;
   margin-top: 60px;
   display: flex;
