@@ -47,7 +47,7 @@ export default function Maze({ data, playerMove }) {
               color = 'black';
               break;
           }
-          updateMap(update, color);
+          ctx && updateMap(update, color);
         }
       }
     }

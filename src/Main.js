@@ -263,7 +263,7 @@ function Main() {
         </ContainerDialog>
       )}
 
-      {!isFinished && <Maze data={mazeMap}></Maze>}
+      {!isFinished && started && <Maze data={mazeMap}></Maze>}
       {isFinished && <h1>YOU FOUND THE EXIT!</h1>}
 
       <ContainerCenterColumn>
